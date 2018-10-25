@@ -42,10 +42,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<ul class="breadcrumb">
 							<li>
 								<i class="ace-icon fa fa-home home-icon"></i>
-								<a href="#">${currMenu.pMenuName }</a>
+								<a href="#">综合面板</a>
 							</li>
-
-							<li class="active">${currMenu.cMenuName }</li>
 						</ul><!-- /.breadcrumb -->
 					</div>
 
@@ -61,14 +59,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										    		<h5 class="widget-title">{{station.title}}站点设备状态</h5>
 										    	</div>
 										    	<div class="widget-body noborder nopadding" style="text-align: center;">
-													<div id="statusBox" class="firstBox">
-													</div>
+													<div id="profile-feed-1" class="profile-feed nopadding">
+												        			<div class="profile-activity "
+												        			  ng-repeat="x in stations" id="{{x.stationId}}" name="station" ng-click="showStationDetail(this.x)">
+												        				<div >
+																			<img class="pull-left" alt="Alex Doe's avatar" ng-src="{{x.pic}}" />
+																			<a class="user" href="#"> {{x.title}} </a>
+																			<div class="time">
+																				<i class="ace-icon fa fa-clock-o bigger-110"></i>
+																				运行正常
+																			</div>
+																		</div>
+												        			</div>
+												        		</div>
 										    	</div>
 								    		</div>
 								    	</div>
 								    	
 										<div class="col-xs-8">
-											<div id="map" class="littlemap">
+											<div id="map" class="littlemap" style="display:none;">
 												<div id="popup"></div>
 												<div id="location" class="location1"></div>
 												<div id="layerbox" class="layerbox usel" style="position:absolute;z-index:444;right: 0px; top: 8px; left: 8px">
@@ -93,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 																		</div>
 												        			</div>
 												        		</div>
-												        	<!-- <ul class="recent-posts" style="height:200px;overflow:auto;">
+												        	<ul class="recent-posts" style="height:200px;overflow:auto;">
 												        		<li ng-repeat="x in stations" id="{{x.stationId}}" name="station" 
 												        	  			class="well " style="cursor:pointer;padding:0px 0px 5px 10px"  
 												             					ng-click="showStationDetail(this.x)">
@@ -107,11 +116,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												                          </div>
 													             	</div>
 												        		</li>
-												        	</ul> -->
+												        	</ul>
 												    	</div>
 												    </div>
 												</div>
 											</div>
+											<div class="widget-box widget-color-blue2 ui-sortable-handle" style="height:40vh">
+										    		    <div class="widget-header">
+												    		<h5 class="widget-title">水质趋势{{param.beginDate}}至{{param.endDate}}</h5>
+												    	</div>
+												    	<div class="widget-body noborder nopadding" style="height:auto;text-align: center;">
+															<div id="linecontainer" ></div>
+												    	</div>
+										    	</div>
 										</div>
 										
 										<div class="col-xs-2" >
@@ -154,13 +171,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</div>
 										<div class="col-xs-6">
 												<div class="widget-box widget-color-blue2 ui-sortable-handle" style="height:40vh">
-										    		    <div class="widget-header">
-												    		<h5 class="widget-title">水质趋势{{param.beginDate}}至{{param.endDate}}</h5>
+														<div class="widget-header">
+												    		<h5 >预警告警</h5>
 												    	</div>
 												    	<div class="widget-body noborder nopadding" style="height:auto;text-align: center;">
-															<div id="linecontainer" ></div>
+															<!-- <div id="warnbox" ></div>
+															<div id="alarmbox" ></div> -->
+															<div>
+																<div class="widget-header"><h5>{{warn.warnType}}</h5></div>
+																<table class="table table-hover table-bordered table-responsive">
+																	<thead>
+																		<tr>
+																			<th>采集时间</th>
+																			<th>监测参数</th>
+																			<th>监测数值</th>
+																			<th>低值</th>
+																			<th>高值</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr ng-repeat="x in warn.warnModels">
+																			<td>{{x.collecttime}}</td>
+																			<td>{{x.indicatorCode}}</td>
+																			<td>{{x.data}}{{x.unitname}}</td>
+																			<td>{{x.warnLower}}</td>
+																			<td>{{x.warnUpper}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+															<div>
+																<div class="widget-header"><h5>{{alarm.warnType}}</h5></div>
+																<table class="table table-hover table-bordered table-responsive">
+																	<thead>
+																		<tr>
+																			<th>采集时间</th>
+																			<th>监测参数</th>
+																			<th>监测数值</th>
+																			<th>低值</th>
+																			<th>高值</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr ng-repeat="x in warn.warnModels">
+																			<td>{{x.collecttime}}</td>
+																			<td>{{x.indicatorCode}}</td>
+																			<td>{{x.data}}{{x.unitname}}</td>
+																			<td>{{x.alarmLower}}</td>
+																			<td>{{x.alarmUpper}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+															
 												    	</div>
-										    	</div>
+												</div>
 										</div>
 									</div>
 								<!-- PAGE CONTENT ENDS -->

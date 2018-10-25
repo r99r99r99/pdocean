@@ -217,10 +217,20 @@ myApp.controller('customersCtrl',function($scope,$http,ngDialog,$modal,$timeout)
     			 	sclist = res;
     		 });
      	
+     	//得到该站点的预警告警信息
+     	
      	$scope.showStatLine(station);
        	 var sparams = {
        			 stationId:station.id
        	 }
+       	 $http({
+       		 method:'POST',
+       		 url:'getWarns4Firstpage.do',
+       		 params:sparams})
+       		 .success(function(res){
+       			$scope.warn = res.warn;
+   				$scope.alarm = res.alarm;
+       		 });
        		$http({
        			 method:'POST',
        			 url:'getDatas4Firstpage.do',
@@ -301,12 +311,12 @@ myApp.controller('customersCtrl',function($scope,$http,ngDialog,$modal,$timeout)
        				 
        				 $("#firstBox").html("");
      			     $("#firstBox").html(lastContent.join(""));
+     			     $("#statusBox").html("");
      			     $("#statusBox").html(statusContent.join(""));
        			 }); 
        	
         };
      
-        
    //定时更新站点的状态信息
    $scope.updateStationStatusintervalId=function(){
 	   stationintervalId = setInterval(function() {
@@ -350,7 +360,7 @@ myApp.controller('customersCtrl',function($scope,$http,ngDialog,$modal,$timeout)
 				        style: function(feature) {
 					        var icon = 	 new ol.style.Style({
 						          		image: new ol.style.Icon({
-							            anchor: [0, 15],
+							            anchor: [10, 15],
 							           anchorXUnits: 'pixels',
 							           anchorYUnits: 'pixels',
 							           /*anchorXUnits: 'fraction',
