@@ -53,7 +53,43 @@
 	<!-- 基础js类库可随意更改 -->
 	
 
-	
+	<script type="text/javascript">
+    var websocket = null;
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://localhost:8080/shocean/webSocketServer.do");
+    } 
+    else if ('MozWebSocket' in window) {
+        websocket = new MozWebSocket("ws://localhost:8080/shocean/webSocketServer.do");
+    } 
+    else {
+        websocket = new SockJS("http://localhost:8080/shocean/sockjs/webSocketServer.do");
+    }
+    websocket.onopen = onOpen;
+    websocket.onmessage = onMessage;
+    websocket.onerror = onError;
+    websocket.onclose = onClose;
+              
+    function onOpen(openEvt) {
+        //alert(openEvt.Data);
+    }
+    
+    function onMessage(evt) {
+        alert(evt.data);
+    }
+    function onError() {}
+    function onClose() {}
+    
+    function doSend() {
+        if (websocket.readyState == websocket.OPEN) {          
+            var msg = document.getElementById("inputMsg").value;  
+            websocket.send(msg);//调用后台handleTextMessage方法
+            alert("发送成功!");  
+        } else {  
+            alert("连接失败!");  
+        }  
+    } 
+    </script>
+    
 	<script src="<%=path %>/shenhai/resources/jquery-2.1.3.min.js"></script>
 	
 	<script language="javascript">
